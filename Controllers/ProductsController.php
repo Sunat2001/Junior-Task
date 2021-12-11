@@ -4,36 +4,28 @@
 
 class ProductsController{
 
+    public function index(array $products){
+        echo "№ Наименование Цена\n";
+        for ($i = 0; $i < count($products); $i++){
+            echo $i+1 . " " . $products[$i] . "\n";
+        }
+    }
+
     public function store(array $products, string $product){
-//        if (preg_match('\'/^[а-яё0-9-]+$/iu\'',$product))
-//        {
-//            return "Product is write incorrect";
-//        }
         array_push($products,$product);
         return $products;
     }
 
     public function update(array $products, int $id, string $product){
         $id--;
-        if(!array_key_exists($id,$products))
-        {
-               return "Products is not found";
-        }
-//        if (!preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z].*[-].*[А-Яа-я]/',$product))
-//        {
-//            return "Product is write incorrect";
-//        }
         $products[$id] = $product;
         return $products;
     }
 
     public function destroy(array $products,int $id){
         $id--;
-        if(!array_key_exists($id,$products))
-        {
-            return "Products is not found";
-        }
         unset($products[$id]);
+        $products = array_values($products);
         return $products;
     }
 
@@ -48,5 +40,8 @@ class ProductsController{
     public function checkForExist(array $products, int $id){
         $id--;
         return array_key_exists($id,$products);
+    }
+    public function checkForValidity(string $product){
+        return preg_match('/^[а-я0-9А-Я .\-]+$/i',$product);
     }
 }
